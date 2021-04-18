@@ -1,0 +1,4 @@
+{
+    "mongoURI" : "mongodb+srv://nooby:1234@noob.ccyoc.mongodb.net/Database?retryWrites=true&w=majority",
+    "jwtToken" : "secrettokken"
+}
