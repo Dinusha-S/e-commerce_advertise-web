@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const config = require('config');
 const {check, validationResult} = require('express-validator');
 
@@ -26,12 +26,12 @@ router.get('/',auth,async (req,res) =>
 // @route   GET api/users
 // @desc    auth user & get token
 // @access  Public
-router.get('/',(req,res) => res.send('user router'));
+// router.get('/',(req,res) => res.send('user router'));
 
 router.post('/',[
     check('userID','id required').exists(),
-    //check('email' , 'enter valid email').isEmail(),
-    check('password required' , 'pass requ').exists()
+    // check('email' , 'enter valid email').isEmail(),
+    check('password' , 'pass required').exists()
 ],
 async (req, res) =>{
     const errors = validationResult(req);
@@ -43,16 +43,16 @@ async (req, res) =>{
 
     try{
     //if user exists
-    let user = await User.findOne({email});
+    let user = await User.findOne({userID});
 
     if(!user) {
-        return res.status(400).json({error :[{ msg :'Invalid'}]})
+        return res.status(400).json({error :[{ msg :'Invalid userID'}]})
     }
 
     const isMatch = await bcrypt.compare(password,user.password);
 
     if(!isMatch){
-        return res.status(400).json({error ({})})
+        return res.status(400).json({error : [{msg : "invalid password"}]})
     }
 
 
@@ -63,7 +63,8 @@ async (req, res) =>{
         }
     }
 
-    jwt.sign(payload, config.get('jwtToken'),
+    jwt.sign(payload, 
+    config.get('jwtToken'),
     {expiresIn :360000},
     (err,token) => {
         if(err) throw err;
