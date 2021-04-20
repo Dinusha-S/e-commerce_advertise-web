@@ -5,8 +5,9 @@ const ProfileSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'user'
     },
-    Mobile : {
-        type : 'Number'
+    mobile : {
+        type : 'Number',
+        required : true
     },
     description : {
         type : String
